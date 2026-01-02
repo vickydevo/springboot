@@ -1,0 +1,24 @@
+# Ignore node_modules directory
+node_modules/
+# Ignore k8s
+k8s/*
+# Ignore build output
+dist/
+target/
+
+# Ignore logs
+*.log
+
+# Ignore environment files
+.env
+.env.*
+
+# Ignore Docker-related files
+.dockerignore
+Dockerfile
+Docker/*
+
+# Ignore Git
+.git
+.gitignore
+*.md

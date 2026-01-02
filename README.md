@@ -1,28 +1,36 @@
-This updated `README.md` integrates the Docker build process into the workflow, ensuring a logical progression from local setup to containerization.
+ `README.md` specifically optimized for your **Ubuntu Server** deployment. added the requested comment for Prometheus, and organized it for better readability.
 
 ---
 
 # Spring Boot Hello - Deployment Guide
 
-This repository contains a Spring Boot application. Follow the steps below to build and deploy the application on an **Ubuntu 22.04/24.04 LTS** server using either a native process or **Docker**.
+This repository contains a Spring Boot application. Follow the steps below to build and deploy the application on an **Ubuntu 22.04/24.04 LTS** server.
 
 ## 1. Pre-requisites
 
 Ensure your system is up to date and the necessary tools are installed.
 
-### Install Core Tools
+### Install Git & Maven
 
 ```bash
 sudo apt update
-sudo apt install git maven openjdk-17-jdk -y
+sudo apt install git maven -y
 
 ```
 
-### Install Docker (Optional for Containerization)
+### Install Java 17 (Ubuntu)
+
+Spring Boot 2.6.4 and your configuration require Java 17.
 
 ```bash
-sudo apt install docker.io -y
-sudo usermod -aG docker $USER && newgrp docker
+# Install OpenJDK 17
+sudo apt install openjdk-17-jdk -y
+
+# Verify the version
+java -version
+
+# If multiple versions exist, set Java 17 as default:
+sudo update-alternatives --config java
 
 ```
 
@@ -30,9 +38,7 @@ sudo usermod -aG docker $USER && newgrp docker
 
 ---
 
-## 2. Clone and Build
-
-### Clone the Repository
+## 2. Clone the Repository
 
 ```bash
 git clone https://github.com/vickydevo/springboot-hello.git
@@ -40,7 +46,9 @@ cd springboot-hello
 
 ```
 
-### Build the JAR file
+---
+
+## 3. Build the Application
 
 Use Maven to compile the code and package it into an executable JAR file.
 
@@ -51,81 +59,63 @@ mvn clean install
 
 ---
 
-## 3. Deployment Options
+## 4. Deploy & Manage the Application
 
-### Option A: Running as a Native Process
+### Start the Application (Foreground)
 
-Use this method to run the app directly on the Ubuntu OS.
-
-**Start in Background:**
+Use this for testing to see logs in real-time:
 
 ```bash
 cd target
+java -jar gs-spring-boot-0.1.0.jar
+
+```
+
+### Start the Application (Background)
+
+Use `nohup` to keep the application running after you close the terminal session:
+
+```bash
 nohup java -jar gs-spring-boot-0.1.0.jar > app_output.log 2>&1 &
 
 ```
 
-**Management Commands:**
+### Useful Management Commands
+
 | Action | Command |
 | --- | --- |
 | **Check if running** | `ps aux | grep java` |
 | **View logs** | `tail -f app_output.log` |
-| **Stop Process** | `pkill -f gs-spring-boot` |
 | **Stop by Job ID** | `jobs` then `kill %1` |
 | **Stop by Process ID** | `kill -9 <PID>` |
 
-### Option B: Running with Docker (Recommended)
+---
 
-Use this method to containerize the application for consistent deployments.
+## 5. Accessing the Application
 
-**Build the Image:**
+Once started, the application is accessible at the following endpoints:
 
-```bash
-docker build -t springboot:v1 .
+* **Home Page:** `http://<YOUR_PUBLIC_IP>:8081`
+* **Actuator Health:** `http://<YOUR_PUBLIC_IP>:8081/actuator/health`
+* **Prometheus Metrics:** `http://<YOUR_PUBLIC_IP>:8081/actuator/prometheus`  Look for your custom chaos metrics: chaos_errors_seconds_count and chaos_leak_seconds_count
+*  http://54.87.142.250:8081/chaos/leak
+<img width="623" height="213" alt="Image" src="https://github.com/user-attachments/assets/f04c628e-174f-4e21-821f-ba2840a58a4c" />
+* http://54.87.142.250:8081/chaos/error
+<img width="986" height="392" alt="Image" src="https://github.com/user-attachments/assets/91f5c6c2-cc2e-411c-b441-2102f4549d71" />
 
-```
 
-**Run the Container:**
+> **Note:** This endpoint exposes internal application metrics (JVM memory, CPU, request counts) in a format that a **Prometheus Server** can scrape for monitoring and dashboarding (e.g., in Grafana).
 
-```bash
-docker run -d -p 8081:8081 --name springboot-app springboot:v1
 
-```
 
 ---
 
-## 4. Accessing the Application
+### Network Troubleshooting
 
-Once started, the application is accessible at the following endpoints (Replace `<IP>` with your server IP):
-
-* **Home Page:** `http://<IP>:8081`
-
----
-
-## 5. Troubleshooting & Network
-
-### Firewall Configuration
-
-If you cannot access the URLs, ensure your **AWS Security Group** or local firewall (UFW) has an **Inbound Rule** configured:
+If you cannot access the URLs above, ensure your **AWS Security Group** has an **Inbound Rule** configured:
 
 * **Type:** Custom TCP
 * **Port Range:** `8081`
 * **Source:** `0.0.0.0/0` (or your specific IP)
 
-### Docker Logs
-
-If using Docker, check container health with:
-
-```bash
-docker logs -f springboot-app
-
-```
-
-**Build the Image: Using ENV-ARG**
-
-```bash
-docker build -t springboot:v1 -f Dockerfile-with-ARG-ENV . --build-arg version=0.1.0
-
-```
-
----
+Would you like me to help you create a **Systemd Service** file so that your application automatically restarts if the Ubuntu server reboots?

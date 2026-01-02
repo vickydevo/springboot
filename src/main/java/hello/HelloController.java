@@ -1,23 +1,47 @@
 package hello;
 
 import java.net.InetAddress;
-import org.springframework.web.bind.annotation.*;
+import java.net.UnknownHostException;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.annotation.Timed;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @RestController
 public class HelloController {
 
+    // Logger for EFK (Elasticsearch, Fluentd, Kibana)
+    private static final Logger logger = LoggerFactory.getLogger(HelloController.class);
+
+    // Counter for Prometheus
+    private final Counter requestCounter;
+
+    // Constructor Injection for MeterRegistry
+    public HelloController(MeterRegistry registry) {
+        this.requestCounter = registry.counter("vignan_app_requests_total", "type", "greeting");
+    }
+
+    @Timed(value = "vignan_index_latency", description = "Time taken to return greeting")
     @RequestMapping("/")
     public String index() {
-        // Get the host machine's IPv4 address
-        String ipAddress = "Unknown IP Address";  // Default value in case of an error
- try {
+        // 1. Increment Prometheus counter
+        requestCounter.increment();
+
+        // 2. Get IP Address
+        String ipAddress = "Unknown";
+        try {
             InetAddress inetAddress = InetAddress.getLocalHost();
             ipAddress = inetAddress.getHostAddress();
-        } catch (java.net.UnknownHostException e) {
- e.printStackTrace();
+        } catch (UnknownHostException e) {
+            logger.error("Error retrieving IP address", e);
         }
 
-        // Return the greeting message with the IPv4 address
- return "JAVA application deployed on DOCKER CONTAINER 04-Nov... By Vignan. IP Address: " + ipAddress;
+        // 3. Log to Console (Scraped by Fluentd)
+        logger.info("Request handled by pod with IP: {}", ipAddress);
+
+        return "Greetings from 'vignan' deployed JAVA app in Minikube! Host private IPv4 Address: " + ipAddress;
     }
 }
