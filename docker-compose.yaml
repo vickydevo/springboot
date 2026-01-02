@@ -1,0 +1,39 @@
+services:
+  springboot:
+      image: springboot-test:30aug 
+      container_name: springboot-backend
+      ports: 
+        - "8083:8081"
+      restart: always 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# version: "3.8"
+
+# services:
+#   # springboot-svc:
+#   #   image: vignan91/${DOCKER_IMAGE}:${DOCKER_TAG}
+#   #   ports:
+#   #     - "${HOST_PORT}:${CONTAINER_PORT}"
+#   #   restart: always
+#   javaspring-cont:
+#     image: vignan91/java-spring:v1
+#     ports:
+#       - "8081:8090"
+#     restart: always
+

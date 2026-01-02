@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Shop</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Spring Shop</h1>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Products</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="welcome">
+            <h2>Welcome to Spring Shop</h2>
+            <p>Discover our latest collection of trendy and high-quality products.</p>
+        </section>
+        <section class="products">
+            <h2>Featured Products</h2>
+            <div class="product-list">
+                <div class="product">
+                    <h3>Cozy Sweater</h3>
+                    <p>A comfortable sweater for chilly days.</p>
+                </div>
+                <div class="product">
+                    <h3>Stylish Jeans</h3>
+                    <p>Fashionable jeans for everyday wear.</p>
+                </div>
+                <div class="product">
+                    <h3>Elegant Watch</h3>
+                    <p>A sophisticated watch for a refined look.</p>
+                </div>
+                <div class="product">
+                    <h3>Running Shoes</h3>
+                    <p>High-performance shoes for your active lifestyle.</p>
+                </div>
+                <div class="product">
+                    <h3>Leather Jacket</h3>
+                    <p>A classic leather jacket for timeless style.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
+```
+```css
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+header {
+    background: #333;
+    color: #fff;
+    padding: 1rem 0;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+}
+
+nav ul {
+    padding: 0;
+    list-style: none;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+}
+
+main {
+    padding: 20px;
+}
+
+.welcome {
+    background: #fff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.products {
+    text-align: center;
+}
+
+.product-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.product {
+    background: #fff;
+    margin: 10px;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 200px; 
+}
+
+.product h3 {
+    margin-top: 0;
+}

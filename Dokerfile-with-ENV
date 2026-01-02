@@ -1,0 +1,7 @@
+FROM openjdk
+MAINTAINER vignan@gmail.com
+WORKDIR /opt
+ARG version
+ENV jarfile=gs-spring-boot-${version}.jar
+COPY ./target/${jarfile} ${jarfile}
+ENTRYPOINT java -jar ${jarfile}
