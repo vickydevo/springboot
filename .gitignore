@@ -1,2 +1,5 @@
 target/
 .vscode/
+app.log
+app.pid
+*.env

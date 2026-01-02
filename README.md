@@ -76,7 +76,7 @@ java -jar gs-spring-boot-0.1.0.jar
 Use `nohup` to keep the application running after you close the terminal session:
 
 ```bash
-nohup java -jar gs-spring-boot-0.1.0.jar > app_output.log 2>&1 &
+nohup java -jar gs-spring-boot-0.1.0.jar > app.log 2>&1 &
 
 ```
 
