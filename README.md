@@ -71,6 +71,8 @@ nohup java -jar gs-spring-boot-0.1.0.jar > app_output.log 2>&1 &
 | **Check if running** | `ps aux | grep java` |
 | **View logs** | `tail -f app_output.log` |
 | **Stop Process** | `pkill -f gs-spring-boot` |
+| **Stop by Job ID** | `jobs` then `kill %1` |
+| **Stop by Process ID** | `kill -9 <PID>` |
 
 ### Option B: Running with Docker (Recommended)
 
@@ -79,14 +81,14 @@ Use this method to containerize the application for consistent deployments.
 **Build the Image:**
 
 ```bash
-docker build -t springboothello:v1 -f Dockerfile-with-ARG-ENV . --build-arg version=0.1.0
+docker build -t springboot:v1 .
 
 ```
 
 **Run the Container:**
 
 ```bash
-docker run -d -p 8081:8081 --name springboot-app springboothello:v1
+docker run -d -p 8081:8081 --name springboot-app springboot:v1
 
 ```
 
@@ -116,6 +118,13 @@ If using Docker, check container health with:
 
 ```bash
 docker logs -f springboot-app
+
+```
+
+**Build the Image: Using ENV-ARG**
+
+```bash
+docker build -t springboot:v1 -f Dockerfile-with-ARG-ENV . --build-arg version=0.1.0
 
 ```
 
