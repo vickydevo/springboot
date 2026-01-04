@@ -61,7 +61,7 @@ Use this method to run the app directly on the Ubuntu OS.
 
 ```bash
 cd target
-nohup java -jar gs-spring-boot-0.1.0.jar > app_output.log 2>&1 &
+nohup java -jar gs-spring-boot-0.1.0.jar > app.log 2>&1 &
 
 ```
 
@@ -93,8 +93,16 @@ docker run -d -p 8081:8081 --name springboot-app springboot:v1
 ```
 
 ---
+## 4. Check the Vulnerabilities in image
 
-## 4. Accessing the Application
+```bash
+trivy image --format table --output trivy-report.txt springboot:v1
+trivy image --severity CRITICAL,HIGH,MEDIUM,LOW springboot:v1
+trivy image --severity CRITICAL,HIGH --format json --output scan-report.json springboot:v1
+trivy image --severity CRITICAL,HIGH --skip-db-update --scanners vuln --output quick-report.txt spring-vuln:v1
+```
+
+## 5. Accessing the Application
 
 Once started, the application is accessible at the following endpoints (Replace `<IP>` with your server IP):
 

@@ -1,7 +1,9 @@
 package hello;
 
 import java.net.InetAddress;
-import org.springframework.web.bind.annotation.*;
+
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class HelloController {
@@ -18,6 +20,6 @@ public class HelloController {
         }
 
         // Return the greeting message with the IPv4 address
- return "JAVA application deployed on DOCKER CONTAINER 04-Nov... By Vignan. IP Address: " + ipAddress;
+ return "JAVA application deployed on DOCKER CONTAINER 04-Jan with reduced Vulnerablities... By Vignan. IP Address: " + ipAddress;
     }
 }

@@ -1,0 +1,26 @@
+# 1. ❌ BASE IMAGE: Using 'jdk' instead of 'jre' and a heavy OS (Ubuntu/Debian)
+# This includes compilers, debuggers, and hundreds of unnecessary OS packages.
+FROM eclipse-temurin:21-jdk 
+
+# 2. ❌ WORKDIR: Using a common root-level directory
+WORKDIR /app
+
+# 3. ❌ COPY: Copying everything (.git, source code, local secrets, env files)
+# This is a "Source Code Leak" and "Secret Exposure" vulnerability.
+COPY . . 
+
+# 4. ❌ USER: Explicitly staying as root
+# This allows 'Container Escape' attacks.
+USER root
+RUN apt update && apt install -y maven
+
+# 5. ❌ BUILD: Building inside the final image
+# This leaves the 'maven-repository' (~200MB of junk) and source code in the image layers.
+RUN mvn clean package -DskipTests
+
+# 6. ❌ PORT: Using a non-standard port without documentation
+EXPOSE 8081
+
+# 7. ❌ ENTRYPOINT: Running the JAR directly from the build target
+# This is fragile and exposes the internal build structure.
+ENTRYPOINT ["java", "-jar", "target/gs-spring-boot-0.1.0.jar"]
