@@ -1,19 +1,25 @@
 package hello;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.web.servlet.MockMvc;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-class HelloControllerTest { // Removed 'public'
+@AutoConfigureMockMvc // This allows us to inject MockMvc
+class HelloControllerTest {
 
     @Autowired
-    private HelloController controller;
+    private MockMvc mvc;
 
     @Test
-    void testIndex() { // Removed 'public'
-        String result = controller.index();
-        assertNotNull(result);
+    void testIndex() throws Exception {
+        mvc.perform(get("/"))
+           .andExpect(status().isOk())
+           .andExpect(content().string(org.hamcrest.Matchers.containsString("By Vignan")));
     }
 }

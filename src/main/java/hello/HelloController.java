@@ -8,23 +8,31 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @RestController
 public class HelloController {
 
     private static final Logger logger = LoggerFactory.getLogger(HelloController.class);
 
     @RequestMapping("/")
-    public String index() {
-        String ipAddress = "Unknown IP Address";
-        
+    public String index(HttpServletRequest request) {
+        // 1. Get the Server's internal IP (The Container)
+        String serverIp = "Unknown Server IP";
         try {
-            InetAddress inetAddress = InetAddress.getLocalHost();
-            ipAddress = inetAddress.getHostAddress();
+            serverIp = InetAddress.getLocalHost().getHostAddress();
         } catch (UnknownHostException e) {
-            // Replaced e.printStackTrace() with a logger
-            logger.error("Could not determine local host address", e);
+            logger.error("Could not determine server host address", e);
         }
 
-        return "JAVA application deployed on DOCKER CONTAINER 12-Jan... By Vignan. IP Address: " + ipAddress;
+        // 2. Get the Client IP (The source of the request)
+        // This works for Laptop, Desktop, or Cloud VM
+        String clientIp = request.getRemoteAddr();
+
+        // 3. Professional Logging
+        logger.info("Incoming request | Client IP: {} | Target: /", clientIp);
+
+        return "JAVA application deployed on DOCKER CONTAINER 12-Jan... By Vignan. " +
+               "Server IP: " + serverIp + " | Request from Client IP: " + clientIp;
     }
 }
