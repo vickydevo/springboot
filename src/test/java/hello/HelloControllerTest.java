@@ -1,18 +1,18 @@
 package hello;
 
-import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class HelloControllerTest {
+class HelloControllerTest { // Removed 'public'
 
     @Autowired
     private HelloController controller;
 
     @Test
-    public void testIndex() {
+    void testIndex() { // Removed 'public'
         String result = controller.index();
         assertNotNull(result);
     }

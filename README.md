@@ -14,7 +14,7 @@ Ensure your system is up to date and the necessary tools are installed.
 
 ```bash
 sudo apt update
-sudo apt install git maven openjdk-17-jdk -y
+sudo apt install git maven openjdk-21-jdk -y
 
 ```
 
@@ -35,8 +35,8 @@ sudo usermod -aG docker $USER && newgrp docker
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/vickydevo/springboot-hello.git
-cd springboot-hello
+git clone https://github.com/vickydevo/springboot.git
+cd springboot
 
 ```
 
@@ -61,7 +61,7 @@ Use this method to run the app directly on the Ubuntu OS.
 
 ```bash
 cd target
-nohup java -jar gs-spring-boot-0.1.0.jar > app_output.log 2>&1 &
+nohup java -jar gs-spring-boot-0.1.0.jar > app.log 2>&1 &
 
 ```
 

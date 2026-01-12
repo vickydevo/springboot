@@ -1,23 +1,30 @@
 package hello;
 
 import java.net.InetAddress;
-import org.springframework.web.bind.annotation.*;
+import java.net.UnknownHostException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class HelloController {
 
+    private static final Logger logger = LoggerFactory.getLogger(HelloController.class);
+
     @RequestMapping("/")
     public String index() {
-        // Get the host machine's IPv4 address
-        String ipAddress = "Unknown IP Address";  // Default value in case of an error
- try {
+        String ipAddress = "Unknown IP Address";
+        
+        try {
             InetAddress inetAddress = InetAddress.getLocalHost();
             ipAddress = inetAddress.getHostAddress();
-        } catch (java.net.UnknownHostException e) {
- e.printStackTrace();
+        } catch (UnknownHostException e) {
+            // Replaced e.printStackTrace() with a logger
+            logger.error("Could not determine local host address", e);
         }
 
-        // Return the greeting message with the IPv4 address
- return "JAVA application deployed on DOCKER CONTAINER 04-Nov... By Vignan. IP Address: " + ipAddress;
+        return "JAVA application deployed on DOCKER CONTAINER 12-Jan... By Vignan. IP Address: " + ipAddress;
     }
 }
