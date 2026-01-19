@@ -1,7 +1,3 @@
-This updated `README.md` integrates the Docker build process into the workflow, ensuring a logical progression from local setup to containerization.
-
----
-
 # Spring Boot Hello - Deployment Guide
 
 This repository contains a Spring Boot application. Follow the steps below to build and deploy the application on an **Ubuntu 22.04/24.04 LTS** server using either a native process or **Docker**.
@@ -98,7 +94,7 @@ docker run -d -p 8081:8081 --name springboot-app springboot:v1
 
 Once started, the application is accessible at the following endpoints (Replace `<IP>` with your server IP):
 
-* **Home Page:** `http://<IP>:8081`
+* **Home Page:** `http://<Host-public-IP>:8081`
 
 ---
 
