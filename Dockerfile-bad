@@ -1,0 +1,36 @@
+# --- Stage 1: Use Java 21 but an older Maven base ---
+FROM maven:3.9.5-eclipse-temurin-21-alpine AS stage1
+WORKDIR /opt
+COPY . .
+# This will now work because the JDK version (21) matches your code
+RUN mvn clean package -DskipTests
+
+# --- Stage 2: Using an old Ubuntu version (This is where Trivy gets happy) ---
+FROM ubuntu:20.04
+
+# Prevent interactive prompts
+ENV DEBIAN_FRONTEND=noninteractive
+
+# 1. Install an older JRE and some extra 'bloat' tools
+RUN apt-get update && apt-get install -y \
+    openjdk-17-jre-headless \ 
+    curl \
+    telnet \
+    vim \
+    && rm -rf /var/lib/apt/lists/*
+
+# 2. Hardcoded Secrets (Trivy will flag these as High/Critical)
+ENV AWS_ACCESS_KEY_ID=REMOVED
+ENV AWS_SECRET_ACCESS_KEY=v8N1S+pL9xR5qT2uW4yZ7A1B3C5D7E9F1G3H5I7J
+
+WORKDIR /app
+# Copy the jar from stage1
+COPY --from=stage1 /opt/target/*.jar ./app.jar
+
+# 3. Permissive permissions (Security risk)
+RUN chmod 777 ./app.jar
+
+EXPOSE 8081
+
+# Still running as root (Misconfiguration)
+ENTRYPOINT ["java","-jar","app.jar"]
