@@ -14,11 +14,11 @@ public class HelloController {
     private String apiKey;
 
     @Value("${spring.datasource.password:NOT_SET}")
-    private String 86d855dbPassword;
+    private String dbPassword;
 
     @GetMapping("/")
     public String index() {
-        return "Greetings from Spring Boot! By Vignan";
+        return "Greetings from Spring Boot! By Gunapriya";
     }
 
     @GetMapping("/config-check")
