@@ -11,16 +11,15 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.2</version> <relativePath/> 
+        <version>3.4.3</version> 
+        <relativePath/> 
     </parent>
 
     <properties>
         <java.version>21</java.version>
         <maven.compiler.release>21</maven.compiler.release>
-        
-        <micrometer.version>1.14.3</micrometer.version>
+        <micrometer.version>1.14.4</micrometer.version>
         <loki-logback.version>1.6.0</loki-logback.version>
-        
         <jacoco.maven.plugin.version>0.8.12</jacoco.maven.plugin.version>
         <sonar.maven.plugin.version>5.0.0.6356</sonar.maven.plugin.version>
         <owasp.dependency-check.version>12.2.0</owasp.dependency-check.version>
@@ -33,24 +32,33 @@
     </properties>
 
     <dependencies>
-
-
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-core</artifactId>
-            <version>10.1.18</version> 
+            <version>10.1.52</version> 
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-websocket</artifactId>
+            <version>10.1.52</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
-            <version>2.24.3</version>
+            <version>2.25.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>2.25.3</version>
         </dependency>
 
         <dependency>
             <groupId>org.javassist</groupId>
             <artifactId>javassist</artifactId>
-            <version>3.18.1-GA</version>
+            <version>3.30.2-GA</version>
         </dependency>
 
         <dependency>
@@ -69,6 +77,7 @@
         <dependency>
             <groupId>io.micrometer</groupId>
             <artifactId>micrometer-registry-prometheus</artifactId>
+            <version>${micrometer.version}</version>
         </dependency>
         <dependency>
             <groupId>com.github.loki4j</groupId>
@@ -92,11 +101,11 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-test</artifactId>
-			<scope>test</scope>
-		</dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -107,28 +116,28 @@
                 <version>3.13.0</version>
             </plugin>
 
-           <plugin>
-    <groupId>org.owasp</groupId>
-    <artifactId>dependency-check-maven</artifactId>
-    <version>${owasp.dependency-check.version}</version>
-    <configuration>
-        <failBuildOnCVSS>7</failBuildOnCVSS>
-        <formats>
-            <format>HTML</format>
-            <format>XML</format>
-            <format>JSON</format>
-            <format>SARIF</format>
-        </formats>
-        <prettyPrint>true</prettyPrint>
-    </configuration>
-    <executions>
-        <execution>
-            <goals>
-                <goal>check</goal>
-            </goals>
-        </execution>
-    </executions>
-</plugin>
+            <plugin>
+                <groupId>org.owasp</groupId>
+                <artifactId>dependency-check-maven</artifactId>
+                <version>${owasp.dependency-check.version}</version>
+                <configuration>
+                    <failBuildOnCVSS>7</failBuildOnCVSS>
+                    <formats>
+                        <format>HTML</format>
+                        <format>XML</format>
+                        <format>JSON</format>
+                    </formats>
+                    <prettyPrint>true</prettyPrint>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
             <plugin>
                 <groupId>org.zaproxy</groupId>
                 <artifactId>zap-maven-plugin</artifactId>
@@ -143,6 +152,7 @@
                 <artifactId>sonar-maven-plugin</artifactId>
                 <version>${sonar.maven.plugin.version}</version>
             </plugin>
+
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
