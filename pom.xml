@@ -17,18 +17,17 @@
 
     <properties>
         <java.version>21</java.version>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
-        <jacoco.maven.plugin.version>0.8.11</jacoco.maven.plugin.version>
-        <sonar.maven.plugin.version>3.11.0.3922</sonar.maven.plugin.version>
+        <maven.compiler.release>21</maven.compiler.release>
+        
+        <jacoco.maven.plugin.version>0.8.12</jacoco.maven.plugin.version>
+        <sonar.maven.plugin.version>5.0.0.6356</sonar.maven.plugin.version>
+        <owasp.dependency-check.version>12.2.0</owasp.dependency-check.version>
         
         <sonar.sources>src/main/java</sonar.sources>
         <sonar.tests>src/test/java</sonar.tests>
-        
         <sonar.coverage.jacoco.xmlReportPaths>
             ${project.build.directory}/site/jacoco/jacoco.xml
         </sonar.coverage.jacoco.xmlReportPaths>
-
         <sonar.exclusions>src/main/java/hello/Application.java</sonar.exclusions>
     </properties>
 
@@ -65,6 +64,15 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
+                <configuration>
+                    <release>21</release>
+                </configuration>
+            </plugin>
+
+            <plugin>
                 <groupId>org.sonarsource.scanner.maven</groupId>
                 <artifactId>sonar-maven-plugin</artifactId>
                 <version>${sonar.maven.plugin.version}</version>
@@ -94,7 +102,7 @@
             <plugin>
               <groupId>org.owasp</groupId>
               <artifactId>dependency-check-maven</artifactId>
-              <version>12.2.0</version>
+              <version>${owasp.dependency-check.version}</version>
             </plugin>
 
             <plugin>
