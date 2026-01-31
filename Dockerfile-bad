@@ -20,9 +20,9 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 
+
 # 2. AWS credentials should be injected securely at runtime, not hardcoded
-# ENV AWS_ACCESS_KEY_ID (set at runtime)
-# ENV AWS_SECRET_ACCESS_KEY (set at runtime)
+# (No hardcoded AWS_ACCESS_KEY_ID or AWS_SECRET_ACCESS_KEY)
 
 WORKDIR /app
 # Copy the jar from stage1
