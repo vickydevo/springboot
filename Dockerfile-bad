@@ -19,9 +19,10 @@ RUN apt-get update && apt-get install -y \
     vim \
     && rm -rf /var/lib/apt/lists/*
 
-# 2. Hardcoded Secrets (Trivy will flag these as High/Critical)
-ENV AWS_ACCESS_KEY_ID=AKIAY3Z0B1C2D3E4F5G6
-ENV AWS_SECRET_ACCESS_KEY=v8N1S+pL9xR5qT2uW4yZ7A1B3C5D7E9F1G3H5I7J
+
+# 2. AWS credentials should be injected securely at runtime, not hardcoded
+# ENV AWS_ACCESS_KEY_ID (set at runtime)
+# ENV AWS_SECRET_ACCESS_KEY (set at runtime)
 
 WORKDIR /app
 # Copy the jar from stage1
