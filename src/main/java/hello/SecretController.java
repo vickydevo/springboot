@@ -1,5 +1,5 @@
 @RestController
 public class SecretController {
     // Hardcoded API Token
-    private String githubToken = "REMOVED";
+    String githubToken = System.getenv("GITHUB_TOKEN");
 }
