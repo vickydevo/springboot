@@ -14,7 +14,7 @@ public class HelloController {
     private String apiKey;
 
     @Value("${spring.datasource.password:NOT_SET}")
-    private String 86d855dbPassword;
+    private String dbPassword_86d855db; // Fixed: Variables cannot start with a number
 
     @GetMapping("/")
     public String index() {
