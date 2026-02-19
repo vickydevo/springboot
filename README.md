@@ -53,10 +53,12 @@ mvn clean install
 
 Use this method to run the app directly on the Ubuntu OS.
 
-**Start in Background:**
+**Start in frontground:**
 
 ```bash
 cd target
+java -jar gs-spring-boot-0.1.0.jar
+# Run at Background
 nohup java -jar gs-spring-boot-0.1.0.jar > app.log 2>&1 &
 
 ```
