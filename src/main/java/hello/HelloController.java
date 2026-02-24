@@ -28,7 +28,7 @@ public class HelloController {
         logger.info("Incoming request | Client IP: {} | Target: /", clientIp);
 
     
-        return "JAVA application deployed on EC2-instance By melky. " +
+        return "JAVA application deployed on EC2-instance By MELKY. " +
        "Server IP: " + serverIp + " | Request from Client IP: " + clientIp;
     }
 

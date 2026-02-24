@@ -1,5 +1,6 @@
 # --- Multistage build starts here ---
-FROM maven:3.9.11-eclipse-temurin-21 AS stage1
+FROM maven:3.9.12-eclipse-temurin-21 AS stage1
+# FROM maven:3.9.12-eclipse-temurin-21-alpine AS stage1
 
 WORKDIR /opt
 
@@ -13,6 +14,7 @@ RUN mvn clean package -DskipTests
 
 # --- Stage 2 starts here ---
 FROM eclipse-temurin:21-jre
+# FROM eclipse-temurin:21-jre-ubi9-minimal
 
 # Copy the built JAR file from the build stage to the runtime image
 COPY --from=stage1 /opt/target/gs-spring-boot-0.1.0.jar ./app.jar
