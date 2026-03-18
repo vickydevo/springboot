@@ -28,7 +28,7 @@ public class HelloController {
         logger.info("Incoming request | Client IP: {} | Target: /", clientIp);
 
     
-        return "JAVA application deployed on Docker Container 2nd By Max. " +
+        return "JAVA application deployed on Docker Container  By Max. " +
        "Server IP: " + serverIp + " | Request from Client IP: " + clientIp;
     }
 
