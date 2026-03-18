@@ -4,7 +4,7 @@ This repository contains a Spring Boot application. Follow the steps below to bu
 
 ## 1. Pre-requisites
 
-Ensure your system is up to date and the necessary tools are installed.
+Ensure your system is up to date and the necessary tools are installed.----------------------
 
 ### Install Core Tools
 
