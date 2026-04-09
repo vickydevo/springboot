@@ -1,5 +1,10 @@
 pipeline {
-    agent any
+    agent { label 'slave1' }
+
+    tools {
+        maven 'm3' 
+        jdk 'jdk21'
+    }
 
     parameters {
         string(name: 'ImageName', defaultValue: 'springboot', description: 'Name of the Docker Image')
@@ -21,6 +26,8 @@ pipeline {
 
         stage("Build-Artifact") {
             steps {
+                // Debugging line: Escaped \$ ensures the shell runs the command
+                sh 'echo "Running as User: $(whoami)"'
                 sh 'mvn clean package -DskipTests'
             }
         }
@@ -48,10 +55,27 @@ pipeline {
 
         stage("Deploy") {
             steps {
-                // 'true' ensures the pipeline doesn't fail if the container doesn't exist yet
                 sh "docker rm -f ${IMAGE_NAME} || true"
                 sh "docker run -d --name ${IMAGE_NAME} -p 8081:8081 ${DOCKER_HUB_USER}/${IMAGE_NAME}:${TAG}"
             }
+        }
+    }
+
+    post {
+        success {
+            echo "Pipeline successful! Cleaning up local images..."
+            // Cleaning up the slave to prevent disk space issues
+            sh "docker rmi ${IMAGE_NAME}:${TAG} ${DOCKER_HUB_USER}/${IMAGE_NAME}:${TAG} || true"
+        }
+        failure {
+            // This block runs ONLY if the build fails at any stage
+            echo "Pipeline FAILED! Sending notification..."
+            sh 'echo "Failure detected by user: $(whoami)"'
+            // You could add email or Slack notifications here
+        }
+        always {
+            // Final debug check to see who finished the job
+            sh 'echo "Job finished by user: $(whoami)"'
         }
     }
 }
