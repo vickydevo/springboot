@@ -1,11 +1,11 @@
 pipeline{
           agent any
-        tools {
-            maven 'maven-3'
-            jdk 'jdk-17'
-            // git 'git-2'  not to use this in tools block
-            // dockerTool 'docker' not to use this in tools block
-        }
+        // tools {
+        //     //maven 'maven-3'
+        //     //jdk 'jdk-17'
+        //     // git 'git-2'  not to use this in tools block
+        //     // dockerTool 'docker' not to use this in tools block
+        // }
         parameters {
             string(name: 'ImageName', defaultValue: 'springboot-hello', description: 'Name of the Docker Image')
             string(name: 'ImageTag', defaultValue: '1.0', description: 'Name of the Docker Image Tag')
@@ -22,12 +22,12 @@ pipeline{
         stages {
             stage ("SCM-checkout") {
                 steps{
-                    git branch: 'main', url: 'https://github.com/vickydevo/springboot-hello.git'
+                    git branch: 'main', url: 'https://github.com/vickydevo/springboot.git'
                 }
             }
             stage ("Build-Artifact") {
                 steps{
-                   sh 'mvn clean package'
+                   sh 'mvn clean package -DskipTests'
                 }
             }// stage2
             stage ("DockerImage"){
@@ -41,15 +41,18 @@ pipeline{
                         withCredentials([usernamePassword(
                             credentialsId: 'docker-cred',
                             usernameVariable: 'DOCKERUSER',
-                            passwordVariable: 'DOCKER_PASSWORD')]) {
-                   sh """ 
-         echo "${DOCKER_PASSWORD}"  |  docker login -u ${DOCKERUSER} --password-stdin
-                    docker tag ${IMAGE_NAME}:${TAG} ${DOCKERUSER}/${IMAGE_NAME}:${TAG}
-                    docker push ${DOCKERUSER}/${IMAGE_NAME}:${TAG} 
-                    """
+  111                          passwordVariable: 'DOCKER_PASSWORD')]) {
+                                       sh """ 
+                                       echo "${DOCKER_PASSWORD}"  |  docker login -u ${DOCKERUSER} --password-stdin
+                                       docker tag ${IMAGE_NAME}:${TAG} ${DOCKERUSER}/${IMAGE_NAME}:${TAG}
+                                       docker push ${DOCKERUSER}/${IMAGE_NAME}:${TAG} 
+                                        """
                             }
                 }
             }// stage4
-            // stage ("Deploy") {}
+                       stage ("Deploy") {
+                                 sh 'docker run -d -p 8081:8081 ${DOCKERUSER}/${IMAGE_NAME}:${TAG}'
+                  
+            }
         }
 }
