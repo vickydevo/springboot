@@ -28,7 +28,7 @@ public class HelloController {
         logger.info("Incoming request | Client IP: {} | Target: /", clientIp);
 
     
-        return "JAVA application deployed on Jenkins node  By AA 09-04. " +
+        return "JAVA application deployed on EC2 Instance  By AA 09-04. " +
        "Server IP: " + serverIp + " | Request from Client IP: " + clientIp;
     }
 
