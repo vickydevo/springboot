@@ -35,7 +35,7 @@ spec:
     spec:
       containers:
       - name: springboot
-        image: vignan91/spring-test:30aug
+        image: vignan91/springboot:1.0
         ports:
         - containerPort: 8081 # The port the Spring application listens on
         resources:
