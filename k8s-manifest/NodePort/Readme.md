@@ -1,6 +1,3 @@
-This is a complete and professional technical guide for exposing your **Spring Boot** application using **NodePort**. I have standardized the formatting, ensured command consistency, and added the **Cleanup** section at the end as requested.
-
----
 
 # 🍃 Spring Boot External Access: NodePort & SSH Tunneling
 
@@ -92,7 +89,7 @@ Since the Minikube IP is on a private bridge network, you must tunnel the traffi
 ### Option A: SSH Tunneling (Best Practice)
 Run this from your **Local Computer terminal**:
 ```bash
-ssh -i "your-key.pem" -L 8081:$(minikube ip):30037 ubuntu@<EC2-PUBLIC-IP>
+ssh -i "your-key.pem" -L 8081:192.168.49.2:30037 ubuntu@<EC2-PUBLIC-IP>
 ```
 
 ### Option B: Kubectl Port-Forward
