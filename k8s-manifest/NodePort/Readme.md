@@ -1,18 +1,16 @@
-This is a solid technical breakdown. You've correctly identified that while **NodePort** is active, you can't reach it on the Minikube IP via the standard app port (8081); you must use the assigned NodePort (30037).
-
-Here is your updated, professional `README.md` specifically tailored to your **Spring Boot** application.
+This is a complete and professional technical guide for exposing your **Spring Boot** application using **NodePort**. I have standardized the formatting, ensured command consistency, and added the **Cleanup** section at the end as requested.
 
 ---
 
 # 🍃 Spring Boot External Access: NodePort & SSH Tunneling
 
-This guide details how to expose a Java Spring Boot application running in a Minikube cluster (on an EC2 instance) and access it from a local browser.
+This guide details how to expose a Java Spring Boot application running in a Minikube cluster (hosted on an EC2 instance) and access it from a local browser.
 
 ---
 
 ## 🏗️ 1. Infrastructure Overview
 
-The request flow follows this path to bridge the gap between your local machine and the private Minikube network:
+The request flow bridges the gap between your local machine and the private Minikube network as follows:
 
 **Local Browser** $\rightarrow$ **SSH Tunnel** $\rightarrow$ **EC2 Host** $\rightarrow$ **Minikube Node (NodePort)** $\rightarrow$ **Spring Boot Pod**
 
@@ -20,7 +18,7 @@ The request flow follows this path to bridge the gap between your local machine 
 
 ## 📄 2. Spring Boot Manifest (`spring-nodeport.yml`)
 
-Apply this configuration to create both the 3-replica deployment and the NodePort service.
+This manifest creates a 3-replica deployment and a NodePort service. Note that the `nodePort` is explicitly set to `30037`.
 
 ```yaml
 apiVersion: apps/v1
@@ -55,15 +53,12 @@ spec:
   - protocol: TCP
     port: 8081        # Service Internal Port
     targetPort: 8081  # Pod Container Port
-    nodePort: 30037   # External Access Port (30000-32767)
-
+    nodePort: 30037   # External Access Port (Range: 30000-32767)
 ```
 
 **Apply the manifest:**
-
 ```bash
 kubectl apply -f spring-nodeport.yml
-
 ```
 
 ---
@@ -71,59 +66,61 @@ kubectl apply -f spring-nodeport.yml
 ## 🔍 3. Verification & Local Testing
 
 ### Check Service Status
-
+Confirm that the service is active and mapped correctly:
 ```bash
-kubectl get svc spring-svc-np
-
+kubectl get svc spring-service-np
 ```
+*The output should display `8081:30037/TCP`.*
 
-*Confirm the output shows `8081:30037/TCP`.*
-
-### Test internally from EC2 Host
-
-Find your Minikube IP and curl the NodePort:
-
+### Test Internally from EC2 Host
+Verify the application is reachable within the EC2 instance by hitting the Minikube IP:
 ```bash
-minikube ip  # e.g., 192.168.49.2
-curl http://192.168.49.2:30037
+# Get Minikube IP (usually 192.168.49.2)
+MINIKUBE_IP=$(minikube ip)
 
+# Curl the NodePort
+curl http://$MINIKUBE_IP:30037
 ```
-
-**Success Output:** `Greetings from 'vignan' deployed JAVA app...`
+**Expected Output:** `Greetings from 'vignan' deployed JAVA app...`
 
 ---
 
 ## 🌐 4. Accessing from your Local Browser
 
-Since the Minikube IP (`192.168.49.2`) is private to the EC2 instance, use an **SSH Tunnel** to map your local machine to the cluster.
+Since the Minikube IP is on a private bridge network, you must tunnel the traffic.
 
-### Option A: Direct Tunnel to NodePort (Recommended)
-
-Run this command from your **Local Terminal** (not the EC2 shell):
-
+### Option A: SSH Tunneling (Best Practice)
+Run this from your **Local Computer terminal**:
 ```bash
-ssh -i "your-key.pem" -L 8081:192.168.49.2:30037 ubuntu@<EC2-PUBLIC-IP>
-
+ssh -i "your-key.pem" -L 8081:$(minikube ip):30037 ubuntu@<EC2-PUBLIC-IP>
 ```
 
-### Option B: Using Kubectl Port-Forward
-
-If you prefer using Kubernetes native tools, run this on the **EC2 instance**:
-
+### Option B: Kubectl Port-Forward
+Run this on the **EC2 instance** to bind the service to all interfaces:
 ```bash
-kubectl port-forward --address 0.0.0.0 service/spring-svc-np 8081:8081
-
+kubectl port-forward --address 0.0.0.0 service/spring-service-np 8081:8081
 ```
-
-*Note: Ensure port 8081 is open in your AWS Security Group.*
+*Note: Ensure port 8081 is allowed in your AWS EC2 Security Group.*
 
 ---
 
 ## 🏁 5. Final Result
-
 Open your local browser and navigate to:
 **`http://localhost:8081`**
 
-
-
 ---
+
+## 🧹 6. Cleanup
+
+To remove all resources created in this guide and free up system memory, run the following commands:
+
+### Delete using the Manifest File
+```bash
+kubectl delete -f spring-nodeport.yml
+```
+
+
+### Verify Cleanup
+```bash
+kubectl get all
+```
