@@ -28,7 +28,7 @@ public class HelloController {
         logger.info("Incoming request | Client IP: {} | Target: /", clientIp);
 
     
-        return "JAVA application deployed on Docker spring version 2  By vignan 18-May. " +
+        return "JAVA application deployed on Docker spring version 2  By vignan 18-06. " +
        "Server IP: " + serverIp + " | Request from Client IP: " + clientIp;
     }
 
