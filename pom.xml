@@ -151,7 +151,7 @@
                 <version>${owasp.dependency-check.version}</version>
                 <configuration>
                     <autoUpdate>false</autoUpdate>
-                    <dataDirectory>${user.home}/.m2/repository/org/owasp/dependency-check-data</dataDirectory>
+                    <dataDirectory>${user.home}/.m2/repository/org/owasp/dependency-check-data/12.0</dataDirectory>
                     <failBuildOnCVSS>7.0</failBuildOnCVSS>
                     <formats>
                         <format>HTML</format>
